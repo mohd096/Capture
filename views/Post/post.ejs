@@ -1,0 +1,68 @@
+<form method="POST" action="/posts" enctype="multipart/form-data">
+    <input type="text" name="name" placeholder="name" value="<%= post.name %>">
+    <input type="file" name="image" accept="image/*" onchange="previewImage(event)">
+    <img id="imagePreview" src="#" alt="Image Preview">    <button type="submit">Submit</button>
+
+
+  <!-- Loop through posts -->
+<% posts.forEach(post => { %>
+  <h3><%= post.name %></h3>
+  <img src="<%= post.image.url %>" alt="<%= post.name %>">
+  <!-- Display likes count -->
+  <p> <%= post.likes %></p>
+
+  <!-- Like Button -->
+  <form method="POST" action="/posts/<%= post._id %>/like">
+    <button type="submit" class="like-button">Like</button>
+  </form>
+
+  <!-- Likes Count -->
+  <p class="likes-count">Likes: <%= post.likes ? post.likes.length : 0 %></p>
+  <form action="/posts/<%= post._id %>/unlike" method="POST">
+    <button type="submit">Dislike</button>
+  </form>
+
+  <!-- Add comment form -->
+  <form method="POST" action="/posts/<%= post._id %>/comments">
+    <input type="text" name="comment" placeholder="Add a comment">
+    <button type="submit">Submit</button>
+  </form>
+    <!-- Display comments -->
+    <% post.comments.forEach(comment => { %>
+      <p><strong><%= comment.userId %>:</strong> <%= comment.text %></p>
+    <% }); %>
+<% }); %>
+
+
+
+  </form>
+  <script>
+    function previewImage(event) {
+      var input = event.target;
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('imagePreview').src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  </script>
+  <!-- <script>
+    const likeButtons = document.querySelectorAll('.like-btn');
+  
+    likeButtons.forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const postId = btn.getAttribute('data-post-id');
+        const response = await fetch(`/posts/${postId}/like`, { method: 'POST' });
+  
+        if (response.ok) {
+          const updatedPost = await response.json();
+          // Update the like button text and handle UI changes
+          btn.textContent = updatedPost.likes.includes(currentUser._id) ? 'Unlike' : 'Like';
+        } else {
+          console.error('Failed to like/unlike the post');
+        }
+      });
+    });
+  </script> -->

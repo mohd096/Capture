@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Library</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/posts">View Your Post</a>
+        
+        
+        <% if (currentUser) {%>
+            <a href="/auth/logout">Log Out</a>
+            <br>
+            <%= currentUser.firstName %>
+            <a href="/user/index">Profile</a>
+        <% } else {%>
+            <a href="/auth/signup">Sign Up</a>
+            <a href="/auth/signin">Sign In</a>
+        <% } %>
+    </nav>
+    <%- body %>
+
+    <% if (currentUser) {%>
+        <%= currentUser.firstName %>
+    <% }%>
+
+</body>
+</html>

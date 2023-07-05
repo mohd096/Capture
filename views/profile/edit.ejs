@@ -1,0 +1,52 @@
+<h2 style="margin: 30px auto">Edit Profile</h2>
+
+<form method="POST" action="/user/edit" style="top: 510px">
+  <input type="file" name="pfp" accept="image/*" onchange="previewImage(event)">
+  <img id="imagePreview" src="#" alt="Image Preview">    <button type="submit">Submit</button>  <div>
+    <label>First Name</label>
+    <input type="text" name="firstName" value="<%= currentUser.firstName %>" />
+  </div>
+  <br />
+
+  <div>
+    <label>Last Name</label>
+    <input type="text" name="lastName" value="<%= currentUser.lastName %>" />
+  </div>
+  <br />
+
+  <div>
+    <label>Email</label>
+    <input
+      type="text"
+      name="emailAddress"
+      value="<%= currentUser.emailAddress %>"
+    />
+  </div>
+  <br />
+  <div>
+    <label>Password</label>
+    <input type="text" name="password" value="**********" />
+  </div>
+
+  <input type="hidden" name="id" value="<%=currentUser._id%>" />
+  <br />
+  <div class="inputGroup inputGroup3">
+    <button id="login" type="submit">Edit</button>
+  </div>
+</form>
+
+<div id="footer" style="position: relative; top: 670px">
+  <p>© Capture</p>
+</div>
+<script>
+  function previewImage(event) {
+    var input = event.target;
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('imagePreview').src = e.target.result;
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+</script>
