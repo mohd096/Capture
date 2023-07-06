@@ -18,6 +18,7 @@ const [posts, setPosts] = useState([])
         
 
 const getAllPosts = async () => {
+  console.log('in get all posts')
     const response = await axios.get('posts', 
     {
         headers: {
@@ -35,21 +36,34 @@ const handleDelete = async (postId) => {
     console.log(response)
     getAllPosts()
 }
+const handleLikes = async (postId) => {
+    console.log(postId)
+    console.log('token: ', localStorage.getItem("token"))
+    try {
+      const response = await axios.post(`posts/${postId}/like`, {}, {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        }
+      });
+    
+      console.log(response.data); // Log the response data for debugging
+      getAllPosts();
+    } catch (error) {
+      console.error(error.response.data); // Log the error response data
+    }
 
-
+  }
 
 const allPosts = posts.map((post, index) => {
 
 return (
     <div className='post-box'>
-     
      <User
-      src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+      src="currentuser.pfp"
       name="Ariana Wattson"
       zoomed
       pointer   
     />;
-        
 
         {/* <Dropdown>
       <Dropdown.Button flat>...</Dropdown.Button>
@@ -65,7 +79,7 @@ return (
 
 
         <div className='like-div'>
-        <button className='like-btn'></button>
+        <button className='like-btn' onClick={()=> {handleLikes(post._id)}}>Like</button>
         {/* <h5>{book.likes}</h5> */}
         </div>
         <div className="comment-section">
@@ -77,11 +91,12 @@ return (
         </div>
 
     <div key={index} className='book-div-index'>
-        <h3>{post.image.url}</h3>
+        <img src={post.image.url} alt="" /> 
 
-    
+
+
         
-        <button className='book-del-btn' onClick={()=> {handleDelete(post._id)}}></button>
+        <button className='book-del-btn' onClick={()=> {handleDelete(post._id)}}>Delete</button>
        
 
     </div>
