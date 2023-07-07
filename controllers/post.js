@@ -36,20 +36,20 @@ exports.createPost_post = async(req, res) => {
         if (!req.file || !req.file.path) {
             throw new Error('No file uploaded');
         }
-
+        console.log("test ", req.user)
         const result = await cloudinary.uploader.upload(req.file.path, {
                 folder: 'posts',
             })
             // Handle the result and send a response
-
+        
         const newPost = {
-            // userId: req.user._id,
+            userId: req.user.id,
             name: req.body.name,
             image: {
                 public_id: result.public_id,
                 url: result.secure_url
             }
-        };
+        };    
         //  await newPost.save();
         const post = await Post.create(newPost)
             // res.redirect('/posts');
@@ -77,59 +77,61 @@ exports.createPost_post = async(req, res) => {
 
 exports.likePost = async(req, res) => {
     try {
+        console.log('in like post')
         const postId = req.params.postId;
         const userId = req.user.id; // Assuming you have user authentication implemented
-        await Post.like(postId, userId);
+        // await Post.like(postId, userId);
+        await Post.findByIdAndUpdate(postId,{})
         res.status(200).json({ message: 'Post liked successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to like the post' });
     }
 };
-exports.unlikePost = async(req, res) => {
-    try {
-        const postId = req.params.postId;
-        const userId = req.user.id; // Assuming you have user authentication implemented
-        await Post.unlike(postId, userId);
-        res.status(200).json({ message: 'Post unliked successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to unlike the post' });
-    }
-};
-exports.getLikesCount = async(req, res) => {
-    try {
-        const postId = req.params.postId;
-        const likesCount = await Post.getLikesCount(postId);
-        res.status(200).json({ likesCount });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to retrieve likes count' });
-    }
-};
-exports.addComment_post = async(req, res) => {
-    try {
-        const postId = req.params.id;
-        const userId = req.user._id;
-        const { text } = req.body;
+// exports.unlikePost = async(req, res) => {
+//     try {
+//         const postId = req.params.postId;
+//         const userId = req.user.id; // Assuming you have user authentication implemented
+//         await Post.unlike(postId, userId);
+//         res.status(200).json({ message: 'Post unliked successfully' });
+//     } catch (error) {
+//         res.status(500).json({ error: 'Failed to unlike the post' });
+//     }
+// };
+// exports.getLikesCount = async(req, res) => {
+//     try {
+//         const postId = req.params.postId;
+//         const likesCount = await Post.getLikesCount(postId);
+//         res.status(200).json({ likesCount });
+//     } catch (error) {
+//         res.status(500).json({ error: 'Failed to retrieve likes count' });
+//     }
+// };
+// exports.addComment_post = async(req, res) => {
+//     try {
+//         const postId = req.params.id;
+//         const userId = req.user._id;
+//         const { text } = req.body;
 
-        const post = await Post.findById(postId);
-        if (!post) {
-            return res.status(404).json({ error: 'Post not found.' });
-        }
+//         const post = await Post.findById(postId);
+//         if (!post) {
+//             return res.status(404).json({ error: 'Post not found.' });
+//         }
 
-        // Create the comment object
-        const comment = {
-            userId,
-            text
-        };
+//         // Create the comment object
+//         const comment = {
+//             userId,
+//             text
+//         };
 
-        // Add the comment to the comments array
-        post.comments.push(comment);
-        await post.save();
+//         // Add the comment to the comments array
+//         post.comments.push(comment);
+//         await post.save();
 
-        res.status(201).json({ success: true, comment });
-    } catch (error) {
-        res.status(500).json({ error: 'An error occurred while creating the comment.' });
-    }
-};
+//         res.status(201).json({ success: true, comment });
+//     } catch (error) {
+//         res.status(500).json({ error: 'An error occurred while creating the comment.' });
+//     }
+// };
 
 
 //  exports.creatPost_post = async (req, res) =>{
