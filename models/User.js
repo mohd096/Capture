@@ -24,7 +24,7 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    userName :{
+    userName: {
         type: String,
         required: true,
         minlength: [2, 'Name must be 2 or more characters'],
@@ -34,20 +34,20 @@ const userSchema = mongoose.Schema({
     bio: {
         type: String,
     },
-    pfp:{
+    pfp: {
         public_id: {
-        type: String,
+            type: String,
         },
         url: {
-          type: String,
+            type: String,
         }
-      },
+    },
     // bio pfp username
-},{
+}, {
     timestamps: true
 })
 
-userSchema.methods.verifyPassword = function(password){
+userSchema.methods.verifyPassword = function(password) {
     console.log('Verifying Password: ', password)
     return bcrypt.compareSync(password, this.password)
 }

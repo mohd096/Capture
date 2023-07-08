@@ -21,27 +21,24 @@ const loginHandler = (e) => {
 
 
 
-  return (
-    <>
+  return (<>
     <h1 className="sign-logo">Signin</h1>
-    <Container>
-
-      <Form.Group>
-        <Form.Label>Email</Form.Label>
-        <Form.Control name="emailAddress" onChange={changeHandler}></Form.Control>
-      </Form.Group>
-      <Form.Group>
-        <Form.Label>Password</Form.Label>
-        <Form.Control name="password" onChange={changeHandler}></Form.Control>
-      </Form.Group>
-
-      <Button onClick={loginHandler} 
-      variant="primary">
+    <div className="container">
+  
+      <div className="form-group">
+        <label className="form-label">Email</label>
+        <input className="form-control" name="emailAddress" onChange={changeHandler} />
+      </div>
+      <div className="form-group">
+        <label className="form-label">Password</label>
+        <input className="form-control" name="password" type="password"onChange={changeHandler} />
+      </div>
+  
+      <button className="btn-primary" onClick={loginHandler}>
         Login
-      </Button>
-
-    </Container>
-    
+      </button>
+  
+    </div>
   </>
   )
 }
