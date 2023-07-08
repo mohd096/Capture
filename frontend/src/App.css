@@ -11,9 +11,16 @@ body {
 }
 
 a {
-    margin-bottom: 38px;
     text-decoration: none;
-    color: rgb(227, 80, 80);
+    color: rgb(0, 0, 0);
+    background-color: rgba(255, 255, 255, 0);
+    height: 40px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+a:hover {
+    color: rgb(255, 106, 106);
 }
 
 
@@ -34,16 +41,20 @@ a {
     right: 0;
     z-index: 1;
     border-bottom: 1px solid rgba(0, 0, 0, 0.361);
+    gap: 3px;
+    font-size: 18px;
+    ;
 }
 
 .title {
-    font-size: 30px;
+    /* font-size: 30px;
     font-weight: bold;
-    color: rgb(255, 106, 106);
+    color: rgb(255, 106, 106); */
     height: 60px;
-    width: 900px;
-    padding-right: 444px;
+    width: 1500px;
     margin-top: -10px;
+    background-color: rgba(192, 192, 192, 0);
+    padding-right: 550px;
 }
 
 .sign-logo {
@@ -141,7 +152,12 @@ p {
   place-items: center;
 } */
 
-.book-div-index {
+.post-box {
+    margin-bottom: 70px;
+    margin-top: 100px;
+}
+
+.post-div-index {
     position: relative;
     height: 600px;
     border-radius: 20px;
@@ -153,6 +169,16 @@ p {
     text-align: center;
 }
 
+.post-img {
+    height: 100%;
+    width: 100%;
+    border-radius: 20px;
+}
+
+
+/* .post-img:hover {
+} */
+
 .book-box {
     margin-left: 140px;
     margin-top: 130px;
@@ -160,9 +186,9 @@ p {
 
 .book-del-btn {
     position: absolute;
-    bottom: 70px;
-    left: 560px;
-    background-color: red;
+    bottom: 130px;
+    left: 700px;
+    background-color: rgba(255, 0, 0, 0);
     color: white;
     border-radius: 50%;
     border: none;
@@ -187,10 +213,10 @@ p {
 
 .like-div {
     position: absolute;
-    bottom: 120px;
-    right: 123px;
-    background-color: rgba(255, 255, 255, 0);
-    color: rgba(195, 83, 83, 0);
+    bottom: 460px;
+    left: 700px;
+    background-color: rgba(232, 25, 25, 0.823);
+    color: rgba(195, 83, 83, 0.762);
     border-radius: 50%;
     border: none;
     width: 40px;
@@ -210,8 +236,8 @@ p {
 
 .comment-section {
     position: absolute;
-    bottom: 40px;
-    right: 123px;
+    bottom: 350px;
+    left: 700px;
     background-color: rgba(255, 255, 255, 0);
     color: rgba(195, 83, 83, 0);
     border-radius: 50%;
@@ -228,7 +254,7 @@ p {
     width: 45px;
     border-radius: 50%;
     border: none;
-    background-color: rgb(7, 153, 198);
+    background-color: rgba(7, 153, 198, 0);
 }
 
 .share {
@@ -239,8 +265,8 @@ p {
     color: rgba(195, 83, 83, 0);
     border-radius: 50%;
     border: none;
-    width: 40px;
-    height: 40px;
+    bottom: 240px;
+    left: 700px;
     font-size: 20px;
     cursor: pointer;
 }
@@ -251,5 +277,191 @@ p {
     width: 45px;
     border-radius: 50%;
     border: none;
-    background-color: rgb(67, 48, 179);
+    background-color: rgba(68, 48, 179, 0);
+}
+
+.ww {
+    color: red
+}
+
+.user-pfp {
+    z-index: -11;
+}
+
+.line {
+    width: 180px;
+    height: 47px;
+    border-bottom: 1px solid black;
+    position: absolute;
+}
+
+
+/* ebrahim's part */
+
+
+/* .profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} */
+
+.profile-image-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.profile-image-container input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.profile-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    /* Decreased margin-top */
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    display: flex;
+    /* Added display property */
+    align-items: center;
+    /* Added align-items property */
+}
+
+.profile-header h1 {
+    margin: 0;
+}
+
+.profile-stats {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.profile-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+}
+
+.profile-posts {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.profile-post {
+    width: 200px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.profile-post-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.profile-post-caption {
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    resize: none;
+}
+
+
+/* end of ebrahim's part  */
+
+
+/* start of login page */
+
+.sign-logo {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 2rem;
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.form-group {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+    margin-bottom: 0.5rem;
+    background-color: rgba(0, 0, 0, 0);
+    width: 100%;
+}
+
+.form-control {
+    width: 70%;
+    margin-left: 18px;
+    height: 3rem;
+    border-radius: 1.5rem;
+    border: none;
+    background-color: rgba(120, 120, 120, 0.2);
+    color: rgb(31, 19, 19);
+    font-size: 1.5rem;
+    padding: 0 1rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.form-control:focus {
+    outline: none;
+    background-color: rgba(114, 112, 112, 0.344);
+}
+
+.btn-primary {
+    width: 100%;
+    height: 3rem;
+    border-radius: 1.5rem;
+    border: none;
+    background-color: #ee1d52;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 2rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+    transition: 0.5s;
+    background-color: #ff2d5a34;
+    border: solid 2px #ee1d52;
+    color: #ee1d52;
 }

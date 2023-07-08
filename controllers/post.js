@@ -1,4 +1,5 @@
 const Post = require("../models/Post")
+const User = require('../models/User');
 
 
 // const upload = require("../utils/multer");
@@ -20,7 +21,7 @@ const cloudinary = require("../utils/cloudinary");
 
 exports.getPosts = async(req, res) => {
     try {
-        const posts = await Post.find();
+        const posts = await Post.find().populate('userId').populate('username').sort({ createdAt: -1 });
         const currentUser = req.user; // Assuming the current user is available in the request object
         // res.render('Post/post', { posts, currentUser, post: {} });
         res.json(posts)
@@ -41,7 +42,7 @@ exports.createPost_post = async(req, res) => {
                 folder: 'posts',
             })
             // Handle the result and send a response
-        
+
         const newPost = {
             userId: req.user.id,
             name: req.body.name,
@@ -49,7 +50,7 @@ exports.createPost_post = async(req, res) => {
                 public_id: result.public_id,
                 url: result.secure_url
             }
-        };    
+        };
         //  await newPost.save();
         const post = await Post.create(newPost)
             // res.redirect('/posts');
@@ -60,6 +61,21 @@ exports.createPost_post = async(req, res) => {
     } catch (error) {
         // Handle the error
         res.status(500).json({ error: 'An error occurred while uploading the image.' });
+    }
+};
+
+
+exports.posts_delete = async(req, res) => {
+    console.log(req.query.id);
+    try {
+        await Post.findByIdAndDelete(req.query.id);
+
+        res.status(200).json({ message: 'Post Deleted' });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: 'Something Went Wrong!' });
+    } finally {
+        console.log('We are in the finally block');
     }
 };
 //   const { userId, caption } = req.body;
@@ -81,7 +97,7 @@ exports.likePost = async(req, res) => {
         const postId = req.params.postId;
         const userId = req.user.id; // Assuming you have user authentication implemented
         // await Post.like(postId, userId);
-        await Post.findByIdAndUpdate(postId,{})
+        await Post.findByIdAndUpdate(postId, {})
         res.status(200).json({ message: 'Post liked successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to like the post' });
