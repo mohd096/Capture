@@ -1,23 +1,20 @@
-
-// make a git request to the book/index
-// display the books in a meaningful way
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Dropdown, User } from "@nextui-org/react";
+import {  User } from "@nextui-org/react";
 
 
 
-export default function PostIndex() {
+export default function PostIndex({ currentUser }) {
 
 const [posts, setPosts] = useState([])
-
-
+const [likedPosts, setLikedPosts] = useState([]);
     useEffect(() => {
         getAllPosts()
     }, [])
         
 
 const getAllPosts = async () => {
+  try {
   console.log('in get all posts')
     const response = await axios.get('posts', 
     {
@@ -28,14 +25,29 @@ const getAllPosts = async () => {
 )
 console.log(response)
 setPosts(response.data)
+} catch (error) {
+  console.error('Error fetching posts:', error);
 }
+};
 
 const handleDelete = async (postId) => {
+  try {
     console.log(postId)
-    const response = await axios.post(`post/delete?id=${postId}`)
+    const response = await axios.post(`posts/${postId}/delete`, {}, {
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem("token")
+      }
+      
+    });
     console.log(response)
     getAllPosts()
-}
+  } catch (error) {
+    console.error('Error deleting post:', error);
+  }
+};
+
+
+
 const handleLikes = async (postId) => {
     console.log(postId)
     console.log('token: ', localStorage.getItem("token"))
@@ -44,23 +56,47 @@ const handleLikes = async (postId) => {
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("token")
         }
+        
       });
     
       console.log(response.data); // Log the response data for debugging
+      setLikedPosts((prevLikedPosts) => [...prevLikedPosts, postId]);
       getAllPosts();
     } catch (error) {
-      console.error(error.response.data); // Log the error response data
+      console.log('Error liking post:', error);
     }
 
   }
 
+  const handleUnlike = async (postId) => {
+    console.log('token: ', localStorage.getItem("token"))
+    try {
+      const response = await axios.post(`posts/${postId}/unlike`, {}, {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        }
+        
+      });
+      console.log(response.data); // Log the response data for debugging
+
+      setLikedPosts((prevLikedPosts) =>
+        prevLikedPosts.filter((id) => id !== postId)
+      );
+    } catch (error) {
+      console.log('Error unliking post:', error);
+    }
+  };
+  
+
 const allPosts = posts.map((post, index) => {
+  const isLiked = likedPosts.includes(post._id);
+  const likesCount = post.likes.length;
 
 return (
-    <div className='post-box'>
+    <div className='post-box' key={post._id}>
      <User
-      src="currentuser.pfp"
-      name="Ariana Wattson"
+      src='{currentUser.pfp.url}'
+      name='{currentUser.userName}'
       zoomed
       pointer   
     />;
@@ -78,13 +114,9 @@ return (
     </Dropdown> */}
 
 
-        <div className='like-div'>
-        <button className='like-btn' onClick={()=> {handleLikes(post._id)}}>Like</button>
-        {/* <h5>{book.likes}</h5> */}
-        </div>
+
         <div className="comment-section">
         <button className='comment-btn'></button>
-        {/* <h5>{book.comments.count}</h5> */}
         </div>
         <div className="share">
         <button className='share-btn' img='frontend/public/logo192.png'></button>
@@ -94,7 +126,13 @@ return (
         <img src={post.image.url} alt="" /> 
 
 
-
+        <div className='like-div'>
+        <button className='like-btn' onClick={isLiked ? () => handleUnlike(post._id) : () => handleLikes(post._id)}
+>
+        {isLiked ? 'Unlike' : 'Like'}
+      </button>
+      <span>{likesCount} likes</span>
+        </div>
         
         <button className='book-del-btn' onClick={()=> {handleDelete(post._id)}}>Delete</button>
        

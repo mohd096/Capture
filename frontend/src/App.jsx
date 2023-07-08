@@ -20,7 +20,20 @@ export default function App() {
     //  const Navigate = useNavigate();
     const [isAuth, setIsAuth] = useState(false);//check if user is authenticated
     const [user, setUser] =useState({});//user object
+    const [users, setUsers] = useState([]);
 
+    useEffect(() => {
+      getUsers();
+    }, []);
+
+    const getUsers = async () => {
+        try {
+          const response = await axios.get('users');
+          setUsers(response.data);
+        } catch (error) {
+          console.error('Error fetching users:', error);
+        }
+      };
     useEffect(() => {
         let token = localStorage.getItem("token");
         if (token != null) {
@@ -103,15 +116,9 @@ return (
             <Routes>
                 <Route
                 path="/"
-                element={<PostIndex />}
+                element={<PostIndex users={users} />}
                 />
 
-
-                {/* this is the route that will be protected 
-                <Route
-                path="/books"
-                element={isAuth ? <BookIndex />:<Signin login={loginHandler}></Signin>}
-                /> */}
                 <Route
                 path="/profile"
                 element={isAuth ? <Profile user={user} />:<Signin login={loginHandler}></Signin>}

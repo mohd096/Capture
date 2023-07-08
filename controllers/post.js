@@ -76,18 +76,69 @@ exports.createPost_post = async(req, res) => {
 // };
 
 exports.likePost = async(req, res) => {
+
+    // try {
+    //     const postId = req.params.postId;
+    //     const userId = req.user.id;
+    
+    //     const post = await Post.findById(postId);
+    //     if (!post) {
+    //       return res.status(404).json({ error: 'Post not found' });
+    //     }
+    
+    //     post.likes(userId);
+    
+    //     await post.save();
+    // //         res.status(200).json({ message: 'Post liked successfully' });
+
+    //     res.status(201).json({ message: 'Post liked successfully' });
+    //   } catch (error) {
+    //     res.status(500).json({ error: 'An error occurred while liking the post.' });
+    //   }
+    // };
     try {
         console.log('in like post')
         const postId = req.params.postId;
         const userId = req.user.id; // Assuming you have user authentication implemented
-        // await Post.like(postId, userId);
-        await Post.findByIdAndUpdate(postId,{})
+        const post = await Post.findByIdAndUpdate(postId,userId);
+        if (!post) {
+            return res.status(404).json({ error: "Post not found" });
+          }
+    // await Post.findByIdAndUpdate(postId,userId)
+        // Post.likes(userId);
+    //     await post.save();
+    // await post.likes(userId);
+
+    // await post.save();
         res.status(200).json({ message: 'Post liked successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to like the post' });
     }
 };
-// exports.unlikePost = async(req, res) => {
+exports.unlikePost = async(req, res) => {
+    try {
+        const postId = req.params.postId;
+        const userId = req.user.id;
+        const post = await Post.findByIdAndUpdate(postId,userId);
+
+        // const post = await Post.findByIdAndUpdate(postId,userId);
+        if (!post) {
+          return res.status(404).json({ error: 'Post not found' });
+        }
+    //    await post.unlike(userId);
+
+        // await post.save();
+        // Post.unlike(userId);
+    
+        // await post.save();
+    
+        res.status(200).json({ message: 'Post Unliked successfully' });
+      } catch (error) {
+        res.status(500).json({ error: 'An error occurred while unliking the post.' });
+      }
+    };
+    
+
 //     try {
 //         const postId = req.params.postId;
 //         const userId = req.user.id; // Assuming you have user authentication implemented
@@ -97,15 +148,32 @@ exports.likePost = async(req, res) => {
 //         res.status(500).json({ error: 'Failed to unlike the post' });
 //     }
 // };
-// exports.getLikesCount = async(req, res) => {
-//     try {
-//         const postId = req.params.postId;
-//         const likesCount = await Post.getLikesCount(postId);
-//         res.status(200).json({ likesCount });
-//     } catch (error) {
-//         res.status(500).json({ error: 'Failed to retrieve likes count' });
-//     }
-// };
+exports.getLikesCount = async(req, res) => {
+    try {
+        const postId = req.params.postId;
+        const likesCount = await Post.getLikesCount(postId);
+        res.status(200).json({ likesCount });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to retrieve likes count' });
+    }
+};
+
+exports.deletePost = async (req, res) => {
+    try {
+      const postId = req.params.postId;
+  
+      const post = await Post.findByIdAndDelete(postId);
+      if (!post) {
+        return res.status(404).json({ error: "Post not found" });
+      }
+  
+    //   await post.remove();
+  
+      res.status(200).json({ message: "Post deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "An error occurred while deleting the post." });
+    }
+  };
 // exports.addComment_post = async(req, res) => {
 //     try {
 //         const postId = req.params.id;

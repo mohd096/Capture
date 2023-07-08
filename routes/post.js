@@ -14,8 +14,9 @@ router.post('/posts', upload.single('image'), isLoggedIn, postController.createP
 // router.post('/posts/:Id/like', postController.likePost_post)
 // router.post('/posts', cloudinaryMiddleware.creatPost_post)
 router.post('/posts/:postId/like', isLoggedIn, postController.likePost);
-// router.post('/posts/:postId/unlike', postController.unlikePost);
-// router.get('/posts/:postId/likes', postController.getLikesCount);
+router.post('/posts/:postId/unlike',isLoggedIn, postController.unlikePost);
+router.get('/posts/:postId/likes',isLoggedIn, postController.getLikesCount);
+router.post('/posts/:postId/delete',isLoggedIn, postController.deletePost);
 
 
 
