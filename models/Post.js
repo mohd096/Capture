@@ -1,47 +1,58 @@
-const mongoose = require('mongoose');
+// models/Post.js
+const mongoose = require('mongoose')
 const  Likes  = require('mongoose-likes');
 
-const postSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  name: {
-    type: String,
-  },
-  image: {
-    public_id: {
-    type: String,
-    required: true
-    },
-    url: {
-      type: String,
-      required: true
-    }
-  },
-  comments: [
-    {
-      userId: {
+const postSchema = mongoose.Schema({
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-      },
-      text: {
+    },
+    name: {
         type: String,
-        required: true
-      }
-    }
-  ],
-  likes: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    }
-  ]
-});
+        
+    },
+    image: {
+        public_id: {
+            type: String,
+            required: true
+        },
+        url: {
+            type: String,
+            required: true
+        }
+    },
+    comments: [{
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        comment: {
+            type: String,
+            
+        }
+    }],
+    likes: [{
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            
+        }
+    }]
+}, {
+    timestamps: true
+})
+
+postSchema.virtual('username', {
+    ref: 'User',
+    localField: 'userId',
+    foreignField: '_id',
+    justOne: true
+})
 postSchema.plugin(Likes);
 
-const Post = mongoose.model('Post', postSchema);
 
-module.exports = Post;
+const Post = mongoose.model('Post', postSchema)
+
+module.exports = Post

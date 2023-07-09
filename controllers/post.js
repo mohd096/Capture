@@ -20,8 +20,8 @@ const cloudinary = require("../utils/cloudinary");
 
 exports.getPosts = async(req, res) => {
     try {
-        const posts = await Post.find();
-        const currentUser = req.user; // Assuming the current user is available in the request object
+        const posts = await Post.find()
+        const currentUser = req.user; 
         // res.render('Post/post', { posts, currentUser, post: {} });
         res.json(posts)
     } catch (error) {
@@ -41,7 +41,7 @@ exports.createPost_post = async(req, res) => {
                 folder: 'posts',
             })
             // Handle the result and send a response
-        
+
         const newPost = {
             userId: req.user.id,
             name: req.body.name,
@@ -49,7 +49,7 @@ exports.createPost_post = async(req, res) => {
                 public_id: result.public_id,
                 url: result.secure_url
             }
-        };    
+        };
         //  await newPost.save();
         const post = await Post.create(newPost)
             // res.redirect('/posts');
@@ -62,6 +62,21 @@ exports.createPost_post = async(req, res) => {
         res.status(500).json({ error: 'An error occurred while uploading the image.' });
     }
 };
+
+
+// exports.posts_delete = async(req, res) => {
+//     console.log(req.query.id);
+//     try {
+//         await Post.findByIdAndDelete(req.query.id);
+
+//         res.status(200).json({ message: 'Post Deleted' });
+//     } catch (error) {
+//         console.log(error.message);
+//         res.status(500).json({ message: 'Something Went Wrong!' });
+//     } finally {
+//         console.log('We are in the finally block');
+//     }
+// };
 //   const { userId, caption } = req.body;
 //   const image = req.file.filename;
 
@@ -174,32 +189,33 @@ exports.deletePost = async (req, res) => {
       res.status(500).json({ error: "An error occurred while deleting the post." });
     }
   };
-// exports.addComment_post = async(req, res) => {
-//     try {
-//         const postId = req.params.id;
-//         const userId = req.user._id;
-//         const { text } = req.body;
+exports.addComment_post = async(req, res) => {
+    try {
+        const postId = req.params.postId;
+        const userId = req.user.id;
+        const { text } = req.body;
 
-//         const post = await Post.findById(postId);
-//         if (!post) {
-//             return res.status(404).json({ error: 'Post not found.' });
-//         }
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found.' });
+        }
 
-//         // Create the comment object
-//         const comment = {
-//             userId,
-//             text
-//         };
+        // Create the comment object
+        const comment = {
+            userId,
+            text
+        };
 
-//         // Add the comment to the comments array
-//         post.comments.push(comment);
-//         await post.save();
+        // Add the comment to the comments array
+        post.comments.push(comment);
+        await post.save();
 
-//         res.status(201).json({ success: true, comment });
-//     } catch (error) {
-//         res.status(500).json({ error: 'An error occurred while creating the comment.' });
-//     }
-// };
+        res.status(201).json({ success: true, comment });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred while creating the comment.' });
+    }
+};
+
 
 
 //  exports.creatPost_post = async (req, res) =>{

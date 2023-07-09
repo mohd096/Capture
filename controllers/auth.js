@@ -132,43 +132,43 @@ exports.auth_logout_get = (req, res, next) => {
 //     });
 // };
 
-// exports.auth_forgotpassword_get = (req, res) => {
-//     try {
-//         res.render("auth/forgetpassword");
-//     } catch (err) {
-//         console.log(err);
-//         console.log("Error Loading Forgot Password Page");
-//     }
-// };
+exports.auth_forgotpassword_get = (req, res) => {
+    try {
+        res.status(200).json("in Forget Password "); 
+        } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: 'Error Geting Forgot password' });   
+    }
+};
 
-// function checkPassword(password, confirmPassword) {
-//     if (password == confirmPassword) {
-//         return true;
-//     } else {
-//         return false;
-//     }
-// }
-// exports.auth_forgotpassword_post = async(req, res) => {
-//     try {
-//         console.log(req.body.confirmpassword);
-//         password = req.body.password;
-//         confirmPassword = req.body.confirmpassword;
-//         const check = checkPassword(password, confirmPassword);
-//         if (check == true) {
-//             const hash = bcrypt.hashSync(confirmPassword, 10);
+function checkPassword(password, confirmPassword) {
+    if (password == confirmPassword) {
+        return true;
+    } else {
+        return false;
+    }
+}
+exports.auth_forgotpassword_post = async(req, res) => {
+    try {
+        console.log(req.body.confirmpassword);
+        password = req.body.password;
+        confirmPassword = req.body.confirmpassword;
+        const check = checkPassword(password, confirmPassword);
+        if (check == true) {
+            const hash = bcrypt.hashSync(confirmPassword, 10);
 
-//             console.log(hash);
+            console.log(hash);
 
-//             await User.findOneAndUpdate({
-//                 emailAddress: req.body.emailAddress,
-//                 password: hash,
-//             });
-//             res.redirect("/auth/signin");
-//         } else {
-//             console.log("Passwords not matched");
-//         }
-//     } catch (err) {
-//         console.log(err);
-//         console.log("Error Posting Data");
-//     }
-// };
+            await User.findOneAndUpdate({
+                emailAddress: req.body.emailAddress,
+                password: hash,
+            });
+            res.status(200).json("Password Has Changed ");       
+         } else {
+            console.log("Passwords not matched");
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: 'Internal server error' });   
+    }
+};
