@@ -139,19 +139,20 @@ const handleDelete = async (postId) => {
     const allPosts = posts.map((post) => {
       const isLiked = likedPosts.includes(post._id);
       const likesCount = post.likes.length;
-
+console.log(post.userId.firstName)
+console.log("post", post)
       return (
         <div className='post-box' key={post._id}>
   {/* <a href={`/user/${post.userId._id}`}>{post.userId.userName}</a> */}
           
   
      <User
-      src={post.userId.pfp}
-      name={<a href={`/profile/${post.userId}`}>{post.userId.firstName}</a>}
+      src={post.userId && post.userId.pfp?.url}
+      name={<a href={`/user/${post.userId}`}>{post.userId.firstName}</a>}
       zoomed
       pointer  
       >
-      <User.Link href={`/profile/${post.userId}`}>@{post.userId.userName}</User.Link>
+      <User.Link href={`/user/${post.userId}`}>@{post.userId.userName}</User.Link>
     </User> 
     
           

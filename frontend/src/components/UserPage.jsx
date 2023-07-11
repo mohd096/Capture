@@ -163,7 +163,7 @@
 
 
 
-//this is the one for the single user profile page as you can see in the userId = "64a65dda472491561c4d8e8a"
+// //this is the one for the single user profile page as you can see in the userId = "64a65dda472491561c4d8e8a"
 
 // import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
@@ -171,7 +171,7 @@
 // const UserPage = () => {
 //   const [user, setUser] = useState(null);
 //   const token = localStorage.getItem('token');
-//   const userId = '64a65dda472491561c4d8e8a'; // Replace with the actual user ID
+//   const userId = '64a6ac2106eb01ed53271671'; // Replace with the actual user ID
 
 //   const getUserInfo = async () => {
 //     try {
@@ -214,7 +214,7 @@
 
 
 
-//this one is for all of the users profile page
+// //this one is for all of the users profile page
 
 
 
@@ -230,9 +230,7 @@ const UserProfile = ({ userId }) => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         },
-        params: {
-          fields: 'name,username,emailAddress'
-        }
+        
       });
       console.log(response.data);
       const user = response.data;

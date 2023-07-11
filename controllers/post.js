@@ -20,7 +20,7 @@ const cloudinary = require("../utils/cloudinary");
 
 exports.getPosts = async(req, res) => {
     try {
-        const posts = await Post.find()
+        const posts = await Post.find().populate('userId').populate('username').sort({createdAt: -1})
         const currentUser = req.user; 
         // res.render('Post/post', { posts, currentUser, post: {} });
         res.json(posts)
