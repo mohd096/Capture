@@ -21,8 +21,9 @@ const cloudinary = require("../utils/cloudinary");
 
 exports.getPosts = async(req, res) => {
     try {
-        const posts = await Post.find().populate('userId').populate('username').sort({ createdAt: -1 });
-        const currentUser = req.user; // Assuming the current user is available in the request object
+        const posts = await Post.find().populate('userId').populate('username').sort({createdAt: -1})
+        const currentUser = req.user; 
+
         // res.render('Post/post', { posts, currentUser, post: {} });
         res.json(posts)
     } catch (error) {
@@ -65,6 +66,7 @@ exports.createPost_post = async(req, res) => {
 };
 
 
+
 exports.posts_delete = async(req, res) => {
     console.log(req.query.id);
     try {
@@ -92,18 +94,70 @@ exports.posts_delete = async(req, res) => {
 // };
 
 exports.likePost = async(req, res) => {
+
+    // try {
+    //     const postId = req.params.postId;
+    //     const userId = req.user.id;
+    
+    //     const post = await Post.findById(postId);
+    //     if (!post) {
+    //       return res.status(404).json({ error: 'Post not found' });
+    //     }
+    
+    //     post.likes(userId);
+    
+    //     await post.save();
+    // //         res.status(200).json({ message: 'Post liked successfully' });
+
+    //     res.status(201).json({ message: 'Post liked successfully' });
+    //   } catch (error) {
+    //     res.status(500).json({ error: 'An error occurred while liking the post.' });
+    //   }
+    // };
     try {
         console.log('in like post')
         const postId = req.params.postId;
         const userId = req.user.id; // Assuming you have user authentication implemented
-        // await Post.like(postId, userId);
-        await Post.findByIdAndUpdate(postId, {})
+        const post = await Post.findByIdAndUpdate(postId,userId);
+        if (!post) {
+            return res.status(404).json({ error: "Post not found" });
+          }
+    // await Post.findByIdAndUpdate(postId,userId)
+        // Post.likes(userId);
+    //     await post.save();
+    // await post.likes(userId);
+
+    // await post.save();
+
         res.status(200).json({ message: 'Post liked successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to like the post' });
     }
 };
-// exports.unlikePost = async(req, res) => {
+exports.unlikePost = async(req, res) => {
+    try {
+        const postId = req.params.postId;
+        const userId = req.user.id;
+        const post = await Post.findByIdAndUpdate(postId,userId);
+
+        // const post = await Post.findByIdAndUpdate(postId,userId);
+        if (!post) {
+          return res.status(404).json({ error: 'Post not found' });
+        }
+    //    await post.unlike(userId);
+
+        // await post.save();
+        // Post.unlike(userId);
+    
+        // await post.save();
+    
+        res.status(200).json({ message: 'Post Unliked successfully' });
+      } catch (error) {
+        res.status(500).json({ error: 'An error occurred while unliking the post.' });
+      }
+    };
+    
+
 //     try {
 //         const postId = req.params.postId;
 //         const userId = req.user.id; // Assuming you have user authentication implemented
@@ -113,41 +167,59 @@ exports.likePost = async(req, res) => {
 //         res.status(500).json({ error: 'Failed to unlike the post' });
 //     }
 // };
-// exports.getLikesCount = async(req, res) => {
-//     try {
-//         const postId = req.params.postId;
-//         const likesCount = await Post.getLikesCount(postId);
-//         res.status(200).json({ likesCount });
-//     } catch (error) {
-//         res.status(500).json({ error: 'Failed to retrieve likes count' });
-//     }
-// };
-// exports.addComment_post = async(req, res) => {
-//     try {
-//         const postId = req.params.id;
-//         const userId = req.user._id;
-//         const { text } = req.body;
+exports.getLikesCount = async(req, res) => {
+    try {
+        const postId = req.params.postId;
+        const likesCount = await Post.getLikesCount(postId);
+        res.status(200).json({ likesCount });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to retrieve likes count' });
+    }
+};
 
-//         const post = await Post.findById(postId);
-//         if (!post) {
-//             return res.status(404).json({ error: 'Post not found.' });
-//         }
+exports.deletePost = async (req, res) => {
+    try {
+      const postId = req.params.postId;
+  
+      const post = await Post.findByIdAndDelete(postId);
+      if (!post) {
+        return res.status(404).json({ error: "Post not found" });
+      }
+  
+    //   await post.remove();
+  
+      res.status(200).json({ message: "Post deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "An error occurred while deleting the post." });
+    }
+  };
+exports.addComment_post = async(req, res) => {
+    try {
+        const postId = req.params.postId;
+        const userId = req.user.id;
+        const { text } = req.body;
 
-//         // Create the comment object
-//         const comment = {
-//             userId,
-//             text
-//         };
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found.' });
+        }
 
-//         // Add the comment to the comments array
-//         post.comments.push(comment);
-//         await post.save();
+        // Create the comment object
+        const comment = {
+            userId,
+            text
+        };
 
-//         res.status(201).json({ success: true, comment });
-//     } catch (error) {
-//         res.status(500).json({ error: 'An error occurred while creating the comment.' });
-//     }
-// };
+        // Add the comment to the comments array
+        post.comments.push(comment);
+        await post.save();
+
+        res.status(201).json({ success: true, comment });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred while creating the comment.' });
+    }
+};
+
 
 
 //  exports.creatPost_post = async (req, res) =>{

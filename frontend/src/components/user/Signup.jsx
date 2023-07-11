@@ -43,7 +43,7 @@ const registerHandler = (e) => {
       </Form.Group>
       <Form.Group>
         <Form.Label>Password</Form.Label>
-        <Form.Control name="password" onChange={changeHandler}></Form.Control>
+        <Form.Control type="password"name="password" onChange={changeHandler}></Form.Control>
       </Form.Group>
 
       <Button onClick={registerHandler} 

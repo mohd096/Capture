@@ -42,7 +42,11 @@ const userSchema = mongoose.Schema({
             type: String,
         }
     },
-    // bio pfp username
+    postId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post',
+    }
+
 }, {
     timestamps: true
 })

@@ -113,6 +113,7 @@ return (
                 path="/"
                 element={<PostIndex />}
                 />
+
                 <Route
                 path="/user/:id"
                 element={<UserPage />}
@@ -121,9 +122,10 @@ return (
 
                 {/* this is the route that will be protected 
                 <Route
-                path="/books"
-                element={isAuth ? <BookIndex />:<Signin login={loginHandler}></Signin>}
-                /> */}
+                path="/user/:id"
+                element={<UserPage />}
+                />
+
                 <Route
                 path="/profile"
                 element={isAuth ? <Profile user={user} />:<Signin login={loginHandler}></Signin>}
@@ -148,7 +150,8 @@ return (
             <div className="side-bar-content">
             <Link className='side-nav-links' to="/">Explore</Link>
             <h3>Following</h3>
-            <div class="line"></div>
+            <div className="line"></div>
+
 <br></br>
 {isAuth ? (
     <div>
