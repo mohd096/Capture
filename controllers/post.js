@@ -1,4 +1,5 @@
 const Post = require("../models/Post")
+const User = require('../models/User');
 
 
 // const upload = require("../utils/multer");
@@ -22,6 +23,7 @@ exports.getPosts = async(req, res) => {
     try {
         const posts = await Post.find().populate('userId').populate('username').sort({createdAt: -1})
         const currentUser = req.user; 
+
         // res.render('Post/post', { posts, currentUser, post: {} });
         res.json(posts)
     } catch (error) {
@@ -64,19 +66,20 @@ exports.createPost_post = async(req, res) => {
 };
 
 
-// exports.posts_delete = async(req, res) => {
-//     console.log(req.query.id);
-//     try {
-//         await Post.findByIdAndDelete(req.query.id);
 
-//         res.status(200).json({ message: 'Post Deleted' });
-//     } catch (error) {
-//         console.log(error.message);
-//         res.status(500).json({ message: 'Something Went Wrong!' });
-//     } finally {
-//         console.log('We are in the finally block');
-//     }
-// };
+exports.posts_delete = async(req, res) => {
+    console.log(req.query.id);
+    try {
+        await Post.findByIdAndDelete(req.query.id);
+
+        res.status(200).json({ message: 'Post Deleted' });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: 'Something Went Wrong!' });
+    } finally {
+        console.log('We are in the finally block');
+    }
+};
 //   const { userId, caption } = req.body;
 //   const image = req.file.filename;
 
@@ -125,6 +128,7 @@ exports.likePost = async(req, res) => {
     // await post.likes(userId);
 
     // await post.save();
+
         res.status(200).json({ message: 'Post liked successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to like the post' });

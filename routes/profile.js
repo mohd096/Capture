@@ -18,5 +18,3 @@ router.get('/user/:id' , userController.user_Profile_Get)
 // router.post('/profile/:userId/', profileController.editUserProfile);
 
 module.exports = router;
-
-

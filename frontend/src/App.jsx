@@ -113,6 +113,14 @@ return (
                 path="/"
                 element={<PostIndex />}
                 />
+
+                <Route
+                path="/user/:id"
+                element={<UserPage />}
+                />
+
+
+                {/* this is the route that will be protected 
                 <Route
                 path="/user/:id"
                 element={<UserPage />}
@@ -143,6 +151,7 @@ return (
             <Link className='side-nav-links' to="/">Explore</Link>
             <h3>Following</h3>
             <div className="line"></div>
+
 <br></br>
 {isAuth ? (
     <div>

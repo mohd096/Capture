@@ -2,6 +2,7 @@
 const mongoose = require('mongoose')
 const  Likes  = require('mongoose-likes');
 
+
 const postSchema = mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -9,9 +10,8 @@ const postSchema = mongoose.Schema({
         required: true
     },
     name: {
-        type: String,
-        
-    },
+        type: String,       
+ },
     image: {
         public_id: {
             type: String,
@@ -30,7 +30,6 @@ const postSchema = mongoose.Schema({
         },
         comment: {
             type: String,
-            
         }
     }],
     likes: [{
@@ -41,7 +40,7 @@ const postSchema = mongoose.Schema({
         },
         like: {
             type: String,
-            
+           
         }
     }]
 }, {
@@ -54,8 +53,8 @@ postSchema.virtual('username', {
     foreignField: '_id',
     justOne: true
 })
-postSchema.plugin(Likes);
 
+postSchema.plugin(Likes);
 
 const Post = mongoose.model('Post', postSchema)
 

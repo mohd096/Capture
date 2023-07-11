@@ -11,14 +11,6 @@ const PostIndex = () => {
   const [commentText, setCommentText] = useState('');
   const [showCommentInput, setShowCommentInput] = useState(false);
 
-  // const find = (selector) => {
-  //   const element = document.querySelector(selector);
-  //   if (element && element.currentSrc) {
-  //     return element.currentSrc;
-  //   } else {
-  //     return null;
-  //   }
-  // }
 
   const getAllPosts = async () => {
     try {
@@ -46,6 +38,7 @@ const PostIndex = () => {
   const handleLikes = async (postId) => {
     console.log(postId)
     console.log('token: ', localStorage.getItem("token"))
+
     try {
       const response = await axios.post(`posts/${postId}/like`, {}, {
         headers: {
@@ -53,7 +46,6 @@ const PostIndex = () => {
         }
         
       });
-    
       console.log(response.data); // Log the response data for debugging
       setLikedPosts((prevLikedPosts) => [...prevLikedPosts, postId]);
       getAllPosts();
@@ -80,7 +72,19 @@ const PostIndex = () => {
       console.log('Error unliking post:', error);
     }
   };
-
+      const updatedPosts = posts.map((post) => {
+        if (post._id === postId) {
+          return response.data;
+        } else {
+          return post;
+        }
+      });
+      setPosts(updatedPosts);
+    } catch (error) {
+      console.log(error.message);
+      // Handle the error here
+    }
+  }
   const handlePostSelect = (post) => {
     console.log(post);
     // Handle the post selection here
@@ -141,9 +145,29 @@ const handleDelete = async (postId) => {
       const likesCount = post.likes.length;
 console.log(post.userId.firstName)
 console.log("post", post)
+  
+
+  const handleDelete = async (postId) => {
+    try {
+      const response = await axios.delete(`posts/delete/id=${postId}`, {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token")
+        }
+      });
+      console.log(response.data); // Log the response data for debugging
+      // const updatedPosts = posts.filter((post) => post._id !== postId);
+      const updatedPosts = posts.filter((post) => post._id !== postId);
+      setPosts(updatedPosts);
+      // setPosts(updatedPosts);
+    } catch (error) {
+      console.log(error.message);
+      // Handle the error here
+    }
+  }
+
+    const allPosts = posts.map((post) => {
       return (
         <div className='post-box' key={post._id}>
-  {/* <a href={`/user/${post.userId._id}`}>{post.userId.userName}</a> */}
           
   
      <User
@@ -153,7 +177,7 @@ console.log("post", post)
       pointer  
       >
       <User.Link href={`/user/${post.userId}`}>@{post.userId.userName}</User.Link>
-    </User> 
+
     
           
           
@@ -164,6 +188,7 @@ console.log("post", post)
             
             <h3>{post.name}</h3>
             <button className='book-del-btn' onClick={() => { handleDelete(post._id) }}> <img src='/assets/Delete.svg' alt='Delete'></img> </button>
+
             <div className='like-div'>
           <Button
           auto
@@ -205,6 +230,20 @@ console.log("post", post)
     <img src={'/assets/share.svg'} alt='Share'></img>
   </button>
 </div>
+          onClick={() => { handleLikes(post._id) }}
+          icon={<HeartIcon fill="currentColor"  />}
+          />
+          
+          
+          </div>
+          <div className="comment-section">
+            <button className='comment-btn'><img src={'/assets/comment.svg'}></img></button>
+          </div>
+          
+          
+          <div className="share">
+            <button className='share-btn' ><img src={'/assets/share.svg'}></img></button>
+          </div>
            
             {/* <Button icon={<UserIcon fill="currentColor" />} color="error" flat>
           Delete User
@@ -225,160 +264,3 @@ console.log("post", post)
 }
 
 export default PostIndex;
-// // make a git request to the book/index
-// // display the books in a meaningful way
-// import axios from 'axios'
-// import React, { useEffect, useState } from 'react'
-// import {  User } from "@nextui-org/react";
-// import { Button, User  } from "@nextui-org/react";
-// import { HeartIcon } from './imported/HeartIcon';
-// import { UserIcon } from './imported/UserIcon';
-
-
-// export default function PostIndex() {
-
-// const [posts, setPosts] = useState([])
-// const [likedPosts, setLikedPosts] = useState([]);
-
-//     useEffect(() => {
-//         getAllPosts()
-//     }, [])
-        
-
-// const getAllPosts = async () => {
-//   try {
-//   console.log('in get all posts')
-//     const response = await axios.get('posts', 
-//     {
-//         headers: {
-//             "Authorization": "Bearer " + localStorage.getItem("token")
-//         }
-//     }
-// )
-// console.log(response)
-// setPosts(response.data)
-// } catch (error) {
-//   console.error('Error fetching posts:', error);
-// }
-// };
-
-// const handleDelete = async (postId) => {
-//   try {
-//     console.log(postId)
-//     const response = await axios.post(`posts/${postId}/delete`, {}, {
-//       headers: {
-//         "Authorization": "Bearer " + localStorage.getItem("token")
-//       }
-
-//     });
-//     console.log(response)
-//     getAllPosts()
-
-//   } catch (error) {
-//     console.error('Error deleting post:', error);
-//   }
-// };
-
-
-// const handleLikes = async (postId) => {
-//     console.log(postId)
-//     console.log('token: ', localStorage.getItem("token"))
-//     try {
-//       const response = await axios.post(`posts/${postId}/like`, {}, {
-//         headers: {
-//           "Authorization": "Bearer " + localStorage.getItem("token")
-//         }
-        
-//       });
-    
-//       console.log(response.data); // Log the response data for debugging
-//       setLikedPosts((prevLikedPosts) => [...prevLikedPosts, postId]);
-//       getAllPosts();
-//     } catch (error) {
-//       console.log('Error liking post:', error);
-//     }
-
-//   }
-
-//   const handleUnlike = async (postId) => {
-//     console.log('token: ', localStorage.getItem("token"))
-//     try {
-//       const response = await axios.post(`posts/${postId}/unlike`, {}, {
-//         headers: {
-//           "Authorization": "Bearer " + localStorage.getItem("token")
-//         }
-
-//       });
-//       console.log(response.data); // Log the response data for debugging
-
-//       setLikedPosts((prevLikedPosts) =>
-//         prevLikedPosts.filter((id) => id !== postId)
-//       );
-//     } catch (error) {
-//       console.log('Error unliking post:', error);
-//     }
-//   };
-
-// const allPosts = posts.map((post, index) => {
-//   const isLiked = likedPosts.includes(post._id);
-//   const likesCount = post.likes.length;
-// return (
-//     <div className='post-box' key={post._id}>
-//      <User
-//       src='{currentUser.pfp.url}'
-//       name='{currentUser.userName}'
-//       zoomed
-//       pointer   
-//     />;
-
-//         {/* <Dropdown>
-//       <Dropdown.Button flat>...</Dropdown.Button>
-//       <Dropdown.Menu aria-label="Static Actions">
-//         <Dropdown.Item key="new">test</Dropdown.Item>
-//         <Dropdown.Item key="copy">Copy link</Dropdown.Item>
-//         <Dropdown.Item key="edit">Edit file</Dropdown.Item>
-//         <Dropdown.Item key="delete" color="error">
-//           Delete file
-//         </Dropdown.Item>
-//       </Dropdown.Menu>
-//     </Dropdown> */}
-
-
-
-//         <div className="comment-section">
-//         <button className='comment-btn'></button>
-//         </div>
-//         <div className="share">
-//         <button className='share-btn' img='frontend/public/logo192.png'></button>
-//         </div>
-
-//     <div key={index} className='book-div-index'>
-//         <img src={post.image.url} alt="" /> 
-
-
-//         <div className='like-div'>
-//         <button className='like-btn' onClick={isLiked ? () => handleUnlike(post._id) : () => handleLikes(post._id)}>
-//         {isLiked ? 'Unlike' : 'Like'}
-//       </button>
-//       <span>{likesCount} likes</span>
-//         </div>
-        
-        
-//         <button className='book-del-btn' onClick={()=> {handleDelete(post._id)}}>Delete</button>
-//       </div>
-
-//     </div>
-// )
-
-
-// })
-
-
-//   return (
-// <>
-
-//     {allPosts}
-//     </>
-//   )
-
-// }
